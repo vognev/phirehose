@@ -42,6 +42,7 @@ abstract class Phirehose
   protected $count; //Can be -150,000 to 150,000. @see http://dev.twitter.com/pages/streaming_api_methods#count
   protected $followIds;
   protected $trackWords;
+  protected $with;
   protected $locationBoxes;
   protected $conn;
   protected $fdrPool;
@@ -216,6 +217,16 @@ abstract class Phirehose
   public function getFollow()
   {
     return $this->followIds;
+  }
+
+  public function setWith($with)
+  {
+        $this->with = $with;
+  }
+
+  public function getWith()
+  {
+      return $this->with;
   }
   
   /**
@@ -603,6 +614,10 @@ abstract class Phirehose
       // Setup the language of the stream
       if($this->lang) {
         $requestParams['language'] = $this->lang;
+      }
+
+      if (($this->method == self::METHOD_USER || $this->method == self::METHOD_SITE) && $this->with) {
+          $requestParams['with'] = $this->with;
       }
       
       // Filter takes additional parameters
